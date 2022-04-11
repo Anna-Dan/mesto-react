@@ -7,11 +7,9 @@
   cursor: pointer;
   background-color: transparent;
   outline: none;
-}
-
-.profile__photo-edit:hover {
   background-color: rgba(0, 0, 0, 0.8);
   background-image: url("../../../images/avatar-edit.svg");
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center;  
 }
+

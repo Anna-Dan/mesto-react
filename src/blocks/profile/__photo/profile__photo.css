@@ -3,5 +3,9 @@
   height: 120px;
   object-fit: cover;
   border-radius: 50%;
-  position: relative;
+}
+
+.profile__photo:hover {
+  opacity: 0.2;
+  cursor: pointer;
 }

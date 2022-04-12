@@ -6,11 +6,9 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
 
   function handleEditAvatarClick() {
@@ -109,7 +107,7 @@ function App() {
           name="add"
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
-          buttonText="Создать"
+          buttonText= "Создать"
         >
           <div className="popup__input-container">
             <input
@@ -141,7 +139,7 @@ function App() {
           title="Вы уверены?"
           name="delete"
           onClose={closeAllPopups}
-          buttonText="Да"
+          buttonText= "Да"
         />
 
         <ImagePopup onClose={closeAllPopups} card={selectedCard} />

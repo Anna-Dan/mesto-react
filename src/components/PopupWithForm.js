@@ -18,6 +18,7 @@ function PopupWithForm(props) {
           className="popup__form"
           name={props.name}
           id={`form_${props.name}`}
+          onSubmit={props.onSubmit}
         >
           <fieldset className="popup__fieldset">
             {props.children}

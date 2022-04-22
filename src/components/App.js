@@ -3,6 +3,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
+import EditProfilePopup from "./EditProfilePopup";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -28,43 +29,28 @@ function App() {
       });
   }, []);
 
-  // React.useEffect(() => {
-  //   api
-  //     .getProfileInfo()
-  //     .then((res) => {
-  //       setUserName(res.name);
-  //       setUserDescription(res.about);
-  //       setUserAvatar(res.avatar);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-
-  //   api
-  //     .getInitialCards()
-  //     .then((res) => {
-  //       setCards(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
     if (!isLiked) {
-      api.setLike(card._id)
+      api
+        .setLike(card._id)
         .then((newCard) => {
-          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+          setCards((state) =>
+            state.map((c) => (c._id === card._id ? newCard : c))
+          );
         })
-        .catch((err) => console.log(err))
-    }
-    else {
-      api.deleteLike(card._id)
+        .catch((err) => console.log(err));
+    } else {
+      api
+        .deleteLike(card._id)
         .then((newCard) => {
-          setCards((state) => state.map((c) => c._id === card._id ? newCard : c))
+          setCards((state) =>
+            state.map((c) => (c._id === card._id ? newCard : c))
+          );
         })
-        .catch((err) => { console.log(err) })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
@@ -72,14 +58,24 @@ function App() {
     api
       .deleteCard(card._id)
       .then(() => {
-        setCards(cards.filter(item => item._id !== card._id));
+        setCards(cards.filter((item) => item._id !== card._id));
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-
+  function handleUpdateUser(userInfo) {    
+    api
+      .updateUserInfo(userInfo)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   }
@@ -120,40 +116,11 @@ function App() {
           />
           <Footer />
 
-          <PopupWithForm
-            title="Редактировать профиль"
-            name="edit"
-            onClose={closeAllPopups}
+          <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
-            buttonText="Сохранить"
-          >
-            <div className="popup__input-container">
-              <input
-                id="name-input"
-                type="text"
-                className="popup__input popup__input_type_name"
-                name="name"
-                placeholder="Имя пользователя"
-                minLength="2"
-                maxLength="40"
-                required
-              />
-              <span className="popup__input-error name-input-error"></span>
-            </div>
-            <div className="popup__input-container">
-              <input
-                id="description-input"
-                type="text"
-                className=" popup__input popup__input_type_description"
-                name="about"
-                placeholder="Описание пользователя"
-                minLength="2"
-                maxLength="200"
-                required
-              />
-              <span className="popup__input-error description-input-error"></span>
-            </div>
-          </PopupWithForm>
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
+          />
 
           <PopupWithForm
             title="Обновить аватар"

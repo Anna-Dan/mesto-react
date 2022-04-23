@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -90,6 +91,18 @@ function App() {
       });
   }
 
+  function handleAddPlaceSubmit(data) {
+    api
+      .addCard(data)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   }
@@ -142,38 +155,11 @@ function App() {
             onUpdateAvatar={handleUpdateAvatar}
           />
 
-          <PopupWithForm
-            title="Новое место"
-            name="add"
+          <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
-            buttonText="Создать"
-          >
-            <div className="popup__input-container">
-              <input
-                id="place-input"
-                type="text"
-                className="popup__input popup__input_type_place"
-                name="name"
-                placeholder="Название"
-                minLength="2"
-                maxLength="30"
-                required
-              />
-              <span className="popup__input-error place-input-error"></span>
-            </div>
-            <div className="popup__input-container">
-              <input
-                id="url-input"
-                type="url"
-                className="popup__input popup__input_type_url"
-                name="link"
-                placeholder="Ссылка на картинку"
-                required
-              />
-              <span className="popup__input-error url-input-error"></span>
-            </div>
-          </PopupWithForm>
+            onAddPlace={handleAddPlaceSubmit}
+          />
 
           <PopupWithForm
             title="Вы уверены?"

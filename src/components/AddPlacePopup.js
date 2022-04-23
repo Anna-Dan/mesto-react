@@ -5,6 +5,11 @@ function AddPlacePopup(props) {
   const [pictureName, setPictureName] = React.useState("");
   const [pictureLink, setPictureLink] = React.useState("");
 
+  React.useEffect(() => {
+    setPictureName("");
+    setPictureLink("");
+  }, [props.isOpen]);
+
   function handlePictureName(e) {
     setPictureName(e.target.value);
   }
@@ -12,6 +17,7 @@ function AddPlacePopup(props) {
   function handlePictureLink(e) {
     setPictureLink(e.target.value);
   }
+
   function handleSubmit(e) {
     e.preventDefault();
     props.onAddPlace({
@@ -19,20 +25,17 @@ function AddPlacePopup(props) {
       link: pictureLink,
     });
   }
-
-  React.useEffect(() => {
-    setPictureName("");
-    setPictureLink("");
-  }, [props.isOpen]);
+ 
 
   return (
     <PopupWithForm
       title="Новое место"
       name="add"
+      buttonText="Создать"
       isOpen={props.isOpen}
       onClose={props.onClose}
-      onSubmit={handleSubmit}
-      buttonText="Создать"
+      handleOverlayClose={props.handleOverlayClose}
+      onSubmit={handleSubmit}      
     >
       <div className="popup__input-container">
         <input

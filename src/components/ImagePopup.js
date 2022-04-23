@@ -3,6 +3,7 @@ function ImagePopup(props) {
       <div
         className={`popup popup_type_zoom ${props.card.link && "popup_opened"}`}
         id="popup_type_zoom"
+        onClick={props.handleOverlayClose}
       >
         <div className="popup__zoom-container">
           <button

@@ -10,21 +10,19 @@ function EditAvatarPopup(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-
     props.onUpdateAvatar({
       avatar: currentAvatar.current.value,
     });
   }
 
   return (
-    <PopupWithForm
-      isOpen={props.isOpen}
-      onClose={props.onClose}
+    <PopupWithForm     
       title="Обновить аватар"
       name="avatar"
+      buttonText="Сохранить"
       isOpen={props.isOpen}
       onClose={props.onClose}
-      buttonText="Сохранить"
+      handleOverlayClose={props.handleOverlayClose}    
       onSubmit={handleSubmit}
     >
       <div className="popup__input-container">

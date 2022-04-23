@@ -11,15 +11,14 @@ import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
+  //первоначальный рендер страницы
   React.useEffect(() => {
     Promise.all([api.getInitialCards(), api.getProfileInfo()])
       .then((res) => {
@@ -31,6 +30,7 @@ function App() {
       });
   }, []);
 
+  //лайки
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     if (!isLiked) {
@@ -56,6 +56,7 @@ function App() {
     }
   }
 
+  //удалить карточку
   function handleCardDelete(card) {
     api
       .deleteCard(card._id)
@@ -67,6 +68,7 @@ function App() {
       });
   }
 
+  //обновить данные пользователя
   function handleUpdateUser(userInfo) {
     api
       .updateUserInfo(userInfo)
@@ -79,6 +81,7 @@ function App() {
       });
   }
 
+  //обновить аватар
   function handleUpdateAvatar(data) {
     api
       .updateUserAvatar(data)
@@ -91,6 +94,7 @@ function App() {
       });
   }
 
+  //добавить новую карточку
   function handleAddPlaceSubmit(data) {
     api
       .addCard(data)
@@ -103,27 +107,24 @@ function App() {
       });
   }
 
-  function handleEditAvatarClick() {
-    setIsEditAvatarPopupOpen(true);
-  }
+  //открытие попапов
+  function handleEditProfileClick() {setIsEditProfilePopupOpen(true);}
+  function handleEditAvatarClick() {setIsEditAvatarPopupOpen(true);}
+  function handleAddPlaceClick() {setIsAddPlacePopupOpen(true);}
+  function handleCardClick(card) {setSelectedCard(card);}
 
-  function handleAddPlaceClick() {
-    setIsAddPlacePopupOpen(true);
-  }
-
-  function handleEditProfileClick() {
-    setIsEditProfilePopupOpen(true);
-  }
-
-  function closeAllPopups() {
-    setSelectedCard({});
-    setIsEditAvatarPopupOpen(false);
+  //закрытие попапов
+  function closeAllPopups() {    
     setIsEditProfilePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);   
     setIsAddPlacePopupOpen(false);
+    setSelectedCard({});
   }
 
-  function handleCardClick(card) {
-    setSelectedCard(card);
+  function handleOverlayClose(e) {
+    if (e.target.classList.contains("popup")) {
+      closeAllPopups();
+    }
   }
 
   return (
@@ -141,34 +142,43 @@ function App() {
             onCardLike={handleCardLike}
             onCardDeleteClick={handleCardDelete}
           />
+          
           <Footer />
 
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
+            handleOverlayClose={handleOverlayClose}
           />
 
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
+            handleOverlayClose={handleOverlayClose}
           />
 
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
+            handleOverlayClose={handleOverlayClose}
           />
 
           <PopupWithForm
             title="Вы уверены?"
             name="delete"
-            onClose={closeAllPopups}
             buttonText="Да"
+            onClose={closeAllPopups}            
+            handleOverlayClose={handleOverlayClose}
           />
 
-          <ImagePopup onClose={closeAllPopups} card={selectedCard} />
+          <ImagePopup
+            onClose={closeAllPopups} 
+            card={selectedCard} 
+            handleOverlayClose={handleOverlayClose}
+          />
         </div>
       </div>
       );

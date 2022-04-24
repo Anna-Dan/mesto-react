@@ -1,9 +1,9 @@
-function ImagePopup(props) {
+function ImagePopup({card, onClose, handleOverlayClose}) {
     return (
       <div
-        className={`popup popup_type_zoom ${props.card.link && "popup_opened"}`}
+        className={`popup popup_type_zoom ${card.link ? 'popup_opened' : ''}`}
         id="popup_type_zoom"
-        onClick={props.handleOverlayClose}
+        onClick={handleOverlayClose}
       >
         <div className="popup__zoom-container">
           <button
@@ -12,16 +12,16 @@ function ImagePopup(props) {
             title="Закрыть окно"
             aria-label="Закрыть"
             id="button_close_image"
-            onClick={props.onClose}
+            onClick={onClose}
           ></button>
           <figure className="popup__figure">
             <img
               className="popup__figure-image"
-              src={props.card.link}
-              alt={props.card.name}
+              src={card.link}
+              alt={card.name}
             />
             <figcaption className="popup__figcaption">
-              {props.card.name}
+              {card.name}
             </figcaption>
           </figure>
         </div>
